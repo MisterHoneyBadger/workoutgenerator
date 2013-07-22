@@ -1,4 +1,6 @@
 Wewewdwedew::Application.routes.draw do
+  
+  root :to => 'webapp#index' #RAILS 3
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
