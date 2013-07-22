@@ -7,7 +7,7 @@ gem 'thor', '>=0.14.4bun'
 gem 'fb_graph'
 gem 'gravatar_image_tag'
 gem "koala", "~> 1.5.0"
-
+gem 'ruby'
 gem 'delayed_job_active_record'
 #gem 'asset_sync'
 gem 'simple_form'
