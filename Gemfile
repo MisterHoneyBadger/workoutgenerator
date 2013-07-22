@@ -61,7 +61,6 @@ end
 group :production do
   gem 'newrelic_rpm'
   gem 'pg'
-  gem 'www_redirect', '0.0.1'
 end
 gem 'sqlite3', :group => [:development, :test]
 
