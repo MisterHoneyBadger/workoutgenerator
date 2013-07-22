@@ -1,6 +1,10 @@
 Wewewdwedew::Application.routes.draw do
   
-  root :to => 'webapp#index' #RAILS 3
+  root :to => 'webapp#index'
+  get "webapp/warmup"
+  get "webapp/cooldown"
+  get "webapp/workout"
+   #RAILS 3
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

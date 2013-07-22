@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
 	<head>
+
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 		<style>
 			body {
 				background-image: url('assets/background3.png');
@@ -14,7 +18,7 @@
 				left: 550px;
 				top: 250px;
 			}
-			
+
 			#warmupbackground {
 				position: relative;
 				left: 3px;
@@ -23,12 +27,12 @@
 			#workoutbackground {
 				position: relative;
 				left: 420px;
-				top: -100px;
+				top: -240px;
 			}
 			#cooldownbackground {
 				position: relative;
 				left: 860px;
-				top: -270px;
+				top: -840px;
 			}
 			.button {
 				border: 1px solid #2d3a42;
@@ -81,15 +85,15 @@
 		</style>
 	</head>
 	<body>
-		<body style="overflow: hidden">
+
 		<div id="heading"><img src="assets/workoutgenerator.png">
 		</div>
 		<div id = "warmupbackground">
 			<img src="/assets/warmuptxt.png" style="display: none;" id = "warmuptxt"/>
 			<br>
-			<table  id="table1" style="display:none;">
+			<table  id="table1" style="display:none;" table cellspacing="8em" cellpadding="8em">
 				<tr>
-					<td><img src="" id = "image1"/></td>
+					<td></td>
 					<td></td>
 				</tr>
 				<tr>
@@ -113,7 +117,7 @@
 		<div id = "workoutbackground">
 			<img src="/assets/workoutxt.png" style="display: none;" id = "workoutxt"/>
 			<br>
-			<table  id="table2" style="display:none;">
+			<table  id="table2" style="display:none;" table cellspacing="8em" cellpadding="8em">
 				<tr>
 					<td></td>
 					<td></td>
@@ -151,13 +155,22 @@
 					<td></td>
 				</tr>
 			</table>
+			
 		</div>
 		<div id = "cooldownbackground">
 			<img src="/assets/cooldown.png" style="display: none;" id = "cooldown"/>
 			<br>
-			<table id="table3" style="display:none;">
+			<table id="table3" style="display:none;" table cellspacing="8em" cellpadding="8em">
 				<tr>
-					<td>sdcd</td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
 					<td></td>
 				</tr>
 				<tr>
@@ -169,6 +182,7 @@
 					<td></td>
 				</tr>
 			</table>
+			<a href='#' style="display: none;" id= "clicked2" onclick = "changebutton()" class='button' >Generate again!</a>
 		</div>
 		<div id = "buttonsposition">
 			<a href='#' id= "clicked" onclick = "changebutton()" class='button' >Generate!</a>
@@ -177,15 +191,46 @@
 </html>
 <script type="text/javascript">
 	function changebutton() {
-		var background = document.getElementsByTagName('body')[0];
-		background.style.backgroundImage = 'url(/assets/backgroundlayout.png)';
-		cooldown.style.display = "block";
-		workoutxt.style.display = "block";
-		warmuptxt.style.display = "block";
-		clicked.style.display = "none";
-		document.getElementById("table1").style.display="block";
-		document.getElementById("table2").style.display="block";
-		document.getElementById("table3").style.display="block";
-		document.getElementById("table2").rows[0].cells[1].innerHTML="block";
+		var myArray = ["back", "chest", "upperbody", "lowerbody"]
+		var randomworkout = myArray[Math.floor(Math.random() * myArray.length)];
+		$('body').css("background-image", 'url(/assets/backgroundlayout.png)');
+		$('#cooldown').show();
+		$('#workoutxt').show();
+		$('#warmuptxt').show();
+		$('#clicked').hide();
+		$('#table2').show();
+		$('#table3').show();
+		$("#table1").show();
+		jQuery.ajax({
+			type : "GET",
+			url : "webapp/warmup",
+			dataType : 'json',
+			success : function(data) {
+				for (var row = 0; row < 4; row++) {
+					$("#table1").children().children()[row].children[0].innerHTML = data[row];
+				}
+			}
+		});
+		jQuery.ajax({
+			type : "GET",
+			url : "webapp/workout",
+			dataType : 'json',
+			success : function(data) {
+				for (var row = 0; row < 9; row++) {
+					$("#table2").children().children()[row].children[0].innerHTML = 	data[row];
+				}
+			}
+		});
+		jQuery.ajax({
+			type : "GET",
+			url : "webapp/cooldown",
+			dataType : 'json',
+			success : function(data) {
+				for (var row = 0; row < 5; row++) {
+					$("#table3").children().children()[row].children[0].innerHTML = data[row];
+				}
+			}
+		});
+		$('#clicked2').show();
 	}
 </script>
