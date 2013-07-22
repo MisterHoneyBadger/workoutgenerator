@@ -16,7 +16,7 @@
 			#buttonsposition {
 				position: relative;
 				left: 550px;
-				top: 250px;
+				top: 200px;
 			}
 
 			#warmupbackground {
@@ -27,12 +27,12 @@
 			#workoutbackground {
 				position: relative;
 				left: 420px;
-				top: -240px;
+				top: -350px;
 			}
 			#cooldownbackground {
 				position: relative;
 				left: 860px;
-				top: -840px;
+				top: -930px;
 			}
 			.button {
 				border: 1px solid #2d3a42;
@@ -85,13 +85,13 @@
 		</style>
 	</head>
 	<body>
-
-		<div id="heading"><img src="assets/workoutgenerator.png">
+	<body style="overflow: hidden">
+		<div id="heading"><img src="assets/workoutgenerator.png"> Workout generator
 		</div>
 		<div id = "warmupbackground">
 			<img src="/assets/warmuptxt.png" style="display: none;" id = "warmuptxt"/>
 			<br>
-			<table  id="table1" style="display:none;" table cellspacing="8em" cellpadding="8em">
+			<table  id="table1" style="display:none;" table cellspacing="5em" cellpadding="5em">
 				<tr>
 					<td></td>
 					<td></td>
@@ -117,15 +117,7 @@
 		<div id = "workoutbackground">
 			<img src="/assets/workoutxt.png" style="display: none;" id = "workoutxt"/>
 			<br>
-			<table  id="table2" style="display:none;" table cellspacing="8em" cellpadding="8em">
-				<tr>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td></td>
-					<td></td>
-				</tr>
+			<table  id="table2" style="display:none;" table cellspacing="5em" cellpadding="5em">
 				<tr>
 					<td></td>
 					<td></td>
@@ -155,12 +147,12 @@
 					<td></td>
 				</tr>
 			</table>
-			
+
 		</div>
 		<div id = "cooldownbackground">
 			<img src="/assets/cooldown.png" style="display: none;" id = "cooldown"/>
 			<br>
-			<table id="table3" style="display:none;" table cellspacing="8em" cellpadding="8em">
+			<table id="table3" style="display:none;" table cellspacing="5em" cellpadding="5em">
 				<tr>
 					<td></td>
 					<td></td>
@@ -182,6 +174,8 @@
 					<td></td>
 				</tr>
 			</table>
+			<br>
+			<br>
 			<a href='#' style="display: none;" id= "clicked2" onclick = "changebutton()" class='button' >Generate again!</a>
 		</div>
 		<div id = "buttonsposition">
@@ -190,6 +184,21 @@
 	</body>
 </html>
 <script type="text/javascript">
+	function ajax(urlname, table, rowNum) {
+		jQuery.ajax({
+			type : "GET",
+			url : urlname,
+			dataType : 'json',
+			success : function(data) {
+				for (var row = 0; row < rowNum; row++) {
+					$(table).children().children()[row].children[0].innerHTML = data[row];
+					var picture = "<img src=" + "/assets/" + data[row].replace(/\s+/g, '') + ".gif" + " height='50' width='50'>";
+					$(table).children().children()[row].children[1].innerHTML = picture;
+				}
+			}
+		});
+	}
+
 	function changebutton() {
 		var myArray = ["back", "chest", "upperbody", "lowerbody"]
 		var randomworkout = myArray[Math.floor(Math.random() * myArray.length)];
@@ -201,36 +210,9 @@
 		$('#table2').show();
 		$('#table3').show();
 		$("#table1").show();
-		jQuery.ajax({
-			type : "GET",
-			url : "webapp/warmup",
-			dataType : 'json',
-			success : function(data) {
-				for (var row = 0; row < 4; row++) {
-					$("#table1").children().children()[row].children[0].innerHTML = data[row];
-				}
-			}
-		});
-		jQuery.ajax({
-			type : "GET",
-			url : "webapp/workout",
-			dataType : 'json',
-			success : function(data) {
-				for (var row = 0; row < 9; row++) {
-					$("#table2").children().children()[row].children[0].innerHTML = 	data[row];
-				}
-			}
-		});
-		jQuery.ajax({
-			type : "GET",
-			url : "webapp/cooldown",
-			dataType : 'json',
-			success : function(data) {
-				for (var row = 0; row < 5; row++) {
-					$("#table3").children().children()[row].children[0].innerHTML = data[row];
-				}
-			}
-		});
+		ajax("webapp/warmup", '#table1', 4)
+		ajax("webapp/workout", '#table2', 7)
+		ajax("webapp/cooldown", '#table3', 5)
 		$('#clicked2').show();
 	}
 </script>
